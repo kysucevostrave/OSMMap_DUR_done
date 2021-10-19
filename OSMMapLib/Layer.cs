@@ -7,23 +7,42 @@ namespace OSMMapLib
     {
         public string urlTemplate;
         public int maxZoom;
+        private float opacity;
 
         public string UrlTemplate { get => urlTemplate; private set => urlTemplate = value; }
         public int MaxZoom { get => maxZoom; private set => maxZoom = value; }
+        public float Opacity { get => opacity; 
+            set {
+                if (value > 1.0f) { 
+                    opacity = 1.0f;
+                    return;
+                }
+                if (value < 0.0f) { 
+                    opacity = 0.0f;
+                    return;
+                }
+                opacity = value;
 
-        public Layer(string _urlTemplate = "https://{c}.tile.openstreetmap.org/{z}/{x}/{y}.png")
+            }
+        }
+
+        public Layer(string _urlTemplate = "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png")
         {
             this.UrlTemplate = _urlTemplate;
             this.MaxZoom = 10;
         }
         public Layer(int _maxZoom)
         {
-            this.UrlTemplate = "https://{c}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+            this.UrlTemplate = "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png";
             this.MaxZoom = _maxZoom;
         }
         public Layer(string _urlTemplate, int _maxZoom = 10) : this(_urlTemplate)
         {
             this.MaxZoom = _maxZoom;
+        }
+        public Layer(string _urlTemplate, int _maxZoom, float _opacity) : this(_urlTemplate, _maxZoom)
+        {
+            this.Opacity = _opacity;
         }
 
         public Tile this[int _x,int _y, int _zoom]
